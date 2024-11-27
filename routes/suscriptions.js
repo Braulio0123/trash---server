@@ -10,7 +10,7 @@ router.post('/subscribe', async (req, res) => {
 
     // Validar que se recibió el objeto de suscripción correctamente
     if (!subscription || !subscription.endpoint || !subscription.keys || !subscription.keys.p256dh || !subscription.keys.auth) {
-      return res.status(400).json({ error: 'Faltan campos necesarios en la suscripción' });
+      return res.status(400).json({ error: 'Faltan campos necesarios' });
     }
 
     // Buscar al usuario por su ID
@@ -24,7 +24,7 @@ router.post('/subscribe', async (req, res) => {
     // Payload para la notificación
     const payload = {
       title: 'Notificaciones activadas',
-      body: 'Gracias por suscribirte',
+      body: 'Gracias por activarlas',
     };
 
     // Enviar la notificación a la suscripción recién guardada
@@ -35,7 +35,7 @@ router.post('/subscribe', async (req, res) => {
 
     await webpush.sendNotification(pushSubscription, JSON.stringify(payload));
 
-    res.status(201).json({ message: 'Suscripción guardada y notificación enviada exitosamente' });
+    res.status(201).json({ message: 'Guardado y notificación enviada exitosamente' });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -56,7 +56,7 @@ router.post('/send', async (req, res) => {
 
     // Verificar si existen usuarios con las suscripciones
     if (users.length === 0) {
-      return res.status(404).json({ error: 'Ningún usuario encontrado con las suscripciones' });
+      return res.status(404).json({ error: 'Ningún usuario encontrado con las notificaciones' });
     }
 
     // Enviar la notificación a cada usuario
@@ -106,7 +106,7 @@ router.post('/sendAll', async (req, res) => {
     });
 
     await Promise.all(notificaciones);
-    res.json({ message: 'Notificaciones enviadas a todas las suscripciones activas' });
+    res.json({ message: 'Notificaciones enviadas a todas las cuentas activas' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
