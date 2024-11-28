@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   suscripcion: { // Datos de la suscripción
-    endpoint: { type: String, unique: true }, // Única a nivel global
+    endpoint: { type: String, unique: true, sparse: true }, // Única a nivel global
     expirationTime: { type: Date },
     keys: {
       p256dh: { type: String },
